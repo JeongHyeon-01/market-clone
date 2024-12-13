@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SPA</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const homePage = `
+            <h1>Home Page</h1>
+            <p>Welcome to the home page.</p>
+            <a href="/about">Go to About</a>
+        `;
+        
+        const aboutPage = `
+            <h1>About Page</h1>
+            <p>This is the about page.</p>
+            <a href="/">Go to Home</a>
+        `;
+
+        function getPageContent() {
+            const path = window.location.pathname;
+            if (path === "/about") {
+                return aboutPage;
+            }
+            return homePage; 
+        }
+        function render() {
+            const appDiv = document.getElementById('app');
+            appDiv.innerHTML = getPageContent();
+        }
+        window.addEventListener("click", (event) => {
+            if (event.target.tagName === 'A') {
+                event.preventDefault();
+                history.pushState({}, "", event.target.href);
+                render();
+            }
+        });
+        render();
+
+        window.onpopstate = () => {
+            render();
+        };
+    </script>
+</body>
+</html>
